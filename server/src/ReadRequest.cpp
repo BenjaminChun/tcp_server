@@ -52,3 +52,15 @@ void ReadRequest::process() {
 
     printBuffer(buffer);
 }
+
+bool ReadRequest::checkMonitor(HashMap& hashMap) {
+    // format the filepath to relative
+    // check if file is being monitored
+    if (hashMap.contains(ReadRequest::pathName)) {
+        std::cout << "File " << pathName << " is being monitored" << std::endl;
+        return true;
+    } else {
+        std::cout << "File " << pathName << " is not being monitored" << std::endl;
+        return false;
+    }
+}

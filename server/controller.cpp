@@ -44,14 +44,14 @@ int main() {
     int port = 8080; // Example port
     
     // construct connection module object
-    ConnectionModule conn(port);
+    // ConnectionModule conn(port);
 
-    // Accept incoming connections
-    int clientSocket = conn.waitForConnection();
-    if (clientSocket == -1) {
-        return 1; // Exit if accepting connection fails
-    }
-    // return 2;
+    // // Accept incoming connections
+    // int clientSocket = conn.waitForConnection();
+    // if (clientSocket == -1) {
+    //     return 1; // Exit if accepting connection fails
+    // }
+    // // return 2;
 
     // Receive data
     // char receiveBuffer[1024]; // Assuming a maximum buffer size of 1024 bytes
@@ -66,14 +66,18 @@ int main() {
     std::vector<char> buffer(MAX_RESPONSE_BUFFER_LENGTH);
 
     // TEST: Create a ReadRequest object
-    WriteRequest requestObject = WriteRequest("1234", 2, "file.txt", 0, std::vector<char> {'a', 'b', 'c'});
+    ReadRequest requestObject = ReadRequest("1234", 1, "file.txt", 0, 10);
 
+    // read
     if (requestObject.opcode == 1) {
         requestObject.process();
+        // requestObject.checkMonitor(&globalHashMap);
     }
+    // write
     else if (requestObject.opcode == 2){
         requestObject.process();
     }
+    // monitor
     else if (requestObject.opcode == 3){
         requestObject.process();
     }

@@ -4,25 +4,20 @@
 #include <fstream>
 
 MonitorRequest::MonitorRequest(const std::string& uniqueID, int opcode, const std::string& pathName, int lengthOfInterval)
-    : Request(uniqueID, opcode, pathName), lengthOfInterval(lengthOfInterval) {}
-
-bool monitorFile(const std::string& filePath, int lengthOfInterval) {
-    // Add to hashmap of file:[machine,time]
-    return true;
-}
+    : Request(uniqueID, opcode, pathName), lengthOfInterval(lengthOfInterval) {
+        std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+        std::chrono::system_clock::duration interval = std::chrono::seconds(lengthOfInterval);
+        expiryTime = now + interval; // Calculating expiry time
+    }
 
 void MonitorRequest::setPathName(){
     pathName = "/home/bchun001/tcp_server/file_sys/"+pathName;
 }
 
-void MonitorRequest::process() {
+void MonitorRequest::process(HashMap& hashMap) {
     // format the filepath to relative
     setPathName();
-    // Implement processing for ReadRequest
-    // std::vector<char> buffer(ReadRequest::numBytesToRead);
-    // buffer = readFile(ReadRequest::pathName, ReadRequest::offset, ReadRequest::numBytesToRead);
-
-    // Implement processing
-    monitorFile(MonitorRequest::pathName,MonitorRequest::lengthOfInterval);
+    // add to hashmap current file:[machineid, expiry time]
+    hashMap.insert(MonitorRequest::pathName, MonitorRequest::uniqueID, MonitorRequest::expiryTime);
     std::cout << "Processed Monitor for " << pathName << std::endl;
 }
