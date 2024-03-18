@@ -4,12 +4,10 @@
 #include <string>
 
 class Request {
-protected:
-    std::string uniqueID;
-    int opcode;
-    std::string pathName;
-
 public:
+    int opcode;
+    std::string uniqueID;
+    std::string pathName;
     Request(const std::string& uniqueID, int opcode, const std::string& pathName);
     virtual ~Request() = default;
 
