@@ -53,6 +53,7 @@ void ReadRequest::process() {
     printBuffer(buffer);
 }
 
+// check if file is being monitored by checking if hashmap contains this path
 bool ReadRequest::checkMonitor(HashMap& hashMap) {
     // format the filepath to relative
     // check if file is being monitored

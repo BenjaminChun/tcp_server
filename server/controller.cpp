@@ -8,6 +8,8 @@
 #include <string>
 #include <utility> // For std::pair
 #include "./include/WriteRequest.h"
+#include "./include/MonitorRequest.h"
+#include <unistd.h> // Include the <unistd.h> header file for the sleep function
 
 // controller listens to a port on start and waits for connection
 // on connection
@@ -20,85 +22,68 @@
 
 int MAX_RESPONSE_BUFFER_LENGTH = 100;
 
-// Define the hashmap type
-using HashMapType = std::unordered_map<std::string, std::list<std::pair<std::string, time_t>>>;
-
-// Declare the global hashmap variable
-HashMapType globalHashMap;
+// create global variable globalhashmap
+HashMap globalHashMap;
 
 int main() {
+    while (true)
+    {
+        // // TODO test connection with marshaller
+        // // construct connection module object
+        // ConnectionModule conn(8080);
 
-    // // Usage example
-    // std::string key = "example_key";
-    // std::list<std::pair<std::string, time_t>> value = {{"value1", time(nullptr)}, {"value2", time(nullptr)}};
+        // // Accept incoming connections
+        // int clientSocket = conn.waitForConnection();
+        // if (clientSocket == -1) {
+        //     return 1; // Exit if accepting connection fails
+        // }
+        // // return 2;
 
-    // // Insert key-value pair into the global hashmap
-    // globalHashMap[key] = value;
+        // // Receive data
+        // char receiveBuffer[1024]; // Assuming a maximum buffer size of 1024 bytes
+        // if (conn.receiveData(receiveBuffer, sizeof(receiveBuffer)) == false) {
+        //     return 1; // Exit if receiving fails
+        // }
 
-    // // Accessing elements in the hashmap
-    // std::cout << "Values associated with key '" << key << "':" << std::endl;
-    // for (const auto& pair : globalHashMap[key]) {
-    //     std::cout << "String: " << pair.first << ", Time: " << pair.second << std::endl;
-    // }
+        // pass thru unmarshaller
+        // TODO
 
-    int port = 8080; // Example port
-    
-    // construct connection module object
-    // ConnectionModule conn(port);
+        // initialise buffer to store return value from services
+        std::vector<char> buffer(MAX_RESPONSE_BUFFER_LENGTH);
 
-    // // Accept incoming connections
-    // int clientSocket = conn.waitForConnection();
-    // if (clientSocket == -1) {
-    //     return 1; // Exit if accepting connection fails
-    // }
-    // // return 2;
+        // TEST to remove: Create a ReadRequest object
+        MonitorRequest requestObject = MonitorRequest("1234", 3, "file.txt", 1000);
+        // monitor file.txt
+        requestObject.process(globalHashMap);
+        // create readrequest
+        ReadRequest requestObject2 = ReadRequest("1234", 1, "file.txt", 0, 10);
+        // read and check if file is being monitored
+        requestObject2.process();
+        requestObject2.checkMonitor(globalHashMap);
+        globalHashMap.printAll();
 
-    // Receive data
-    // char receiveBuffer[1024]; // Assuming a maximum buffer size of 1024 bytes
-    // if (conn.receiveData(receiveBuffer, sizeof(receiveBuffer)) == false) {
-    //     return 1; // Exit if receiving fails
-    // }
+        // TODO: Iron out with jx on the return var
+        // // read
+        // if (typeid(requestObject)==typeid(ReadRequest)) {
+        //     requestObject.process();
+        //     requestObject.checkMonitor(globalHashMap);
+        //     globalHashMap.printAll();
+        // }
+        // // write
+        // else if (typeid(requestObject)==typeid(WriteRequest)){
+        //     requestObject.process();
+        // }
+        // // monitor
+        // else if (typeid(requestObject)==typeid(MonitorRequest)){
+        //     requestObject.process();
+        // }
+        // else {
+        //     // print error message opcode does not exist
+        //     std::cout << "Error: opcode " << requestObject.opcode << " does not exist." << std::endl;
+        // }
 
-    // pass thru unmarshaller
-    // TODO
+        // after going thru the server service
 
-    // initialise buffer to store return value from services
-    std::vector<char> buffer(MAX_RESPONSE_BUFFER_LENGTH);
-
-    // TEST: Create a ReadRequest object
-    ReadRequest requestObject = ReadRequest("1234", 1, "file.txt", 0, 10);
-
-    // read
-    if (requestObject.opcode == 1) {
-        requestObject.process();
-        // requestObject.checkMonitor(&globalHashMap);
+        // create response object
     }
-    // write
-    else if (requestObject.opcode == 2){
-        requestObject.process();
-    }
-    // monitor
-    else if (requestObject.opcode == 3){
-        requestObject.process();
-    }
-    else {
-        // print error message opcode does not exist
-        std::cout << "Error: opcode " << requestObject.opcode << " does not exist." << std::endl;
-    }
-
-    // after going thru the server service
-    
-    // create response object
-    
-
-    // pass response thru the marshaller
-    
-
-    
-    // // Create a ReadRequest object
-    // ReadRequest readReq("1234", 1, "file.txt", 0, 10);
-    // // Call process method
-    // readReq.process();
-
-    // return 0;
 }

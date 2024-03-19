@@ -28,10 +28,11 @@ bool HashMap::contains(const std::string& keyToCheck) {
     // Check if the parameter is a key
     auto it = hashMap.find(keyToCheck);
     if (it != hashMap.end()) {
-        // Key found, return false
-        return false;
-    } else {
-        // Key not found, return true
+        // Key found, return true
+        std::cout << "Key: " << it->first << ", Value: " << it->second.first << ", ExpiryTime: " << std::chrono::system_clock::to_time_t(it->second.second) << std::endl;
         return true;
+    } else {
+        // Key not found, return false
+        return false;
     }
 }
