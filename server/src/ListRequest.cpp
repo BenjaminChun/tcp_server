@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 
-ListRequest::ListRequest(const std::string& uniqueID, int opcode, const std::string& pathName)
+ListRequest::ListRequest(int uniqueID, int opcode, const std::string& pathName)
     : Request(uniqueID, opcode, pathName) {}
 
 // TODO: decide implementation need to return what

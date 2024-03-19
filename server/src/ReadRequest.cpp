@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 
-ReadRequest::ReadRequest(const std::string& uniqueID, int opcode, const std::string& pathName, int offset, int numBytesToRead)
+ReadRequest::ReadRequest(int uniqueID, int opcode, const std::string& pathName, int offset, int numBytesToRead)
     : Request(uniqueID, opcode, pathName), offset(offset), numBytesToRead(numBytesToRead) {}
 
 std::vector<char> readFile(const std::string &filePath, int offset, int numBytesToRead)

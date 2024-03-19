@@ -3,10 +3,10 @@
 #include <vector>
 #include <fstream>
 
-WriteRequest::WriteRequest(const std::string& uniqueID, int opcode, const std::string& pathName, int offset, std::vector<char> bytesToWrite)
+WriteRequest::WriteRequest(int uniqueID, int opcode, const std::string& pathName, int offset, std::string bytesToWrite)
     : Request(uniqueID, opcode, pathName), offset(offset), bytesToWrite(bytesToWrite) {}
 
-bool writeFile(const std::string& filePath, int offset, const std::vector<char>& bytesToWrite) {
+bool writeFile(const std::string& filePath, int offset, const std::string bytesToWrite) {
     // Open the file in binary mode for writing
     std::ofstream file(filePath, std::ios::binary | std::ios::in | std::ios::out);
     if (!file.is_open()) {

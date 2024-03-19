@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 
-MonitorRequest::MonitorRequest(const std::string& uniqueID, int opcode, const std::string& pathName, int lengthOfInterval)
+MonitorRequest::MonitorRequest(int uniqueID, int opcode, const std::string& pathName, int lengthOfInterval)
     : Request(uniqueID, opcode, pathName), lengthOfInterval(lengthOfInterval) {
         std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
         std::chrono::system_clock::duration interval = std::chrono::seconds(lengthOfInterval);
@@ -17,7 +17,9 @@ void MonitorRequest::setPathName(){
 void MonitorRequest::process(HashMap& hashMap) {
     // format the filepath to relative
     setPathName();
+    // convert uniqueID to string
+    std::string uniqueIDStr = std::to_string(uniqueID);
     // add to hashmap current file:[machineid, expiry time]
-    hashMap.insert(MonitorRequest::pathName, MonitorRequest::uniqueID, MonitorRequest::expiryTime);
+    hashMap.insert(MonitorRequest::pathName, uniqueIDStr, MonitorRequest::expiryTime);
     std::cout << "Processed Monitor for " << pathName << std::endl;
 }
